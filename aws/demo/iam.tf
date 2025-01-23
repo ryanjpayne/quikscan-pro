@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "lambda_execution_policy_document" {
     statement {
       actions = ["logs:CreateLogStream", "logs:PutLogEvents"]
       effect = "Allow"
-      resources = ["arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.unique_id}-function}:*"]
+      resources = ["arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.unique_id}-function:*"]
     }
 }
 data "aws_iam_policy_document" "lambda_ssm_policy_document" {
@@ -56,15 +56,7 @@ data "aws_iam_policy_document" "lambda_securityhub_policy_document" {
         resources = ["arn:aws:securityhub:${var.region}:517716713836:product/crowdstrike/*"]
     }
 }
-data "aws_iam_policy_document" "ec2_s3_policy_document" {
-    statement {
-      actions = [
-          "s3:*"
-      ]
-      effect = "Allow"
-      resources = [aws_s3_bucket.bucket.arn, "${aws_s3_bucket.bucket.arn}/*"]
-    }
-}
+
 resource "aws_iam_policy" "lambda_ssm_policy" {
   name        = "${var.unique_id}_ssm_policy"
   policy      = data.aws_iam_policy_document.lambda_ssm_policy_document.json
