@@ -14,17 +14,14 @@ data "aws_iam_policy_document" "lambda_execution_policy_document" {
       resources = ["arn:aws:logs:${var.region}:${data.aws_caller_identity.current.account_id}:log-group:/aws/lambda/${var.unique_id}-function:*"]
     }
 }
-data "aws_iam_policy_document" "lambda_ssm_policy_document" {
+data "aws_iam_policy_document" "lambda_secret_policy_document" {
     statement {
         actions = [
-            "ssm:GetParameterHistory",
-            "ssm:GetParametersByPath",
-            "ssm:GetParameters",
-            "ssm:GetParameter"
+            "secretsmanager:GetSecretValue"
         ]
         effect = "Allow"
         resources = [
-            "arn:aws:ssm:${var.region}:${data.aws_caller_identity.current.account_id}:parameter/*"
+            "arn:aws:secretsmanager:*:*:secret:${var.unique_id}-secret"
         ]
     }
 }
@@ -57,9 +54,9 @@ data "aws_iam_policy_document" "lambda_securityhub_policy_document" {
     }
 }
 
-resource "aws_iam_policy" "lambda_ssm_policy" {
-  name        = "${var.unique_id}_ssm_policy"
-  policy      = data.aws_iam_policy_document.lambda_ssm_policy_document.json
+resource "aws_iam_policy" "lambda_secret_policy" {
+  name        = "${var.unique_id}_secret_policy"
+  policy      = data.aws_iam_policy_document.lambda_secret_policy_document.json
 }
 resource "aws_iam_policy" "lambda_execution_policy" {
   name        = "${var.unique_id}_execution_policy"
@@ -90,10 +87,10 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 EOF
 }
-resource "aws_iam_policy_attachment" "lambda_ssm_policy_attach" {
-	name = "${var.unique_id}_ssm-policy-attachment"
+resource "aws_iam_policy_attachment" "lambda_secret_policy_attach" {
+	name = "${var.unique_id}_secret-policy-attachment"
 	roles = [aws_iam_role.iam_for_lambda.name]
-	policy_arn = aws_iam_policy.lambda_ssm_policy.arn
+	policy_arn = aws_iam_policy.lambda_secret_policy.arn
 }
 resource "aws_iam_policy_attachment" "lambda_exec_policy_attach" {
 	name = "${var.unique_id}_lambda-exec-policy-attachment"

@@ -96,7 +96,7 @@ def lambda_handler(event, _):
     """Function Handler"""
     bucket_name = event['Records'][0]['s3']['bucket']['name']
     key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'], encoding='utf-8')
-    upload_file_size = int(event["size"])
+    upload_file_size = int(event['Records'][0]['s3']['object']["size"])
     try:
         secret_str = get_secret()
         if secret_str:
