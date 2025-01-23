@@ -2,13 +2,11 @@
 variable "falcon_client_id" {
     description = "The CrowdStrike Falcon API client ID"
     type = string
-    default = ""
     sensitive = true
 }
 variable "falcon_client_secret" {
     description = "The CrowdStrike Falcon API client secret"
     type = string
-    default = ""
     sensitive = true
 }
 #
