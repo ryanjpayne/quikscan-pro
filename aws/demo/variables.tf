@@ -28,11 +28,6 @@ variable "lambda_function_filename" {
     type = string
     default = "lambda-function.zip"
 }
-variable "lambda_function_name" {
-    description = "The name used for the lambda function"
-    type = string
-    default = "quikscan-pro-demo-function"
-}
 variable "lambda_mitigate_threats" {
     description = "Remove malicious files from the bucket as they are discovered."
     type = string
