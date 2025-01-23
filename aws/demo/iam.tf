@@ -81,14 +81,6 @@ resource "aws_iam_policy" "lambda_securityhub_policy" {
   name        = "${var.unique_id}_${var.lambda_function_name}_securityhub_policy"
   policy      = data.aws_iam_policy_document.lambda_securityhub_policy_document.json
 }
-resource "aws_iam_policy" "ec2_s3_policy" {
-  name        = "${var.unique_id}_${var.instance_name}_s3_policy"
-  policy      = data.aws_iam_policy_document.ec2_s3_policy_document.json
-}
-resource "aws_iam_policy" "ec2_securityhub_policy" {
-  name        = "${var.unique_id}_${var.instance_name}_securityhub_policy"
-  policy      = data.aws_iam_policy_document.lambda_securityhub_policy_document.json
-}
 resource "aws_iam_role" "iam_for_lambda" {
   name = "${var.unique_id}_${var.lambda_execution_role_name}" 
   assume_role_policy = <<EOF
@@ -105,38 +97,6 @@ resource "aws_iam_role" "iam_for_lambda" {
   ]
 }
 EOF
-}
-resource "aws_iam_instance_profile" "ec2-ssm-role-profile" {
-  name = "${var.unique_id}_${var.iam_prefix}-role-profile"
-  role = aws_iam_role.ec2-ssm-role-for-mgt.name
-}
-
-resource "aws_iam_role" "ec2-ssm-role-for-mgt" {
-  name = "${var.unique_id}_${var.iam_prefix}-role" 
-  assume_role_policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Principal": {
-          "Service": "ec2.amazonaws.com"
-        },
-        "Action": "sts:AssumeRole"
-      }
-    ]
-}
-EOF
-}
-
-resource "aws_iam_role_policy_attachment" "ec2-ssm-role-policy" {
-  role = aws_iam_role.ec2-ssm-role-for-mgt.name
-  policy_arn = aws_iam_policy.ec2_s3_policy.arn
-}
-resource "aws_iam_policy_attachment" "ec2_securityhub_policy_attach" {
-	name = "${var.unique_id}_ec2-securityhub-policy-attachment"
-	roles = [aws_iam_role.ec2-ssm-role-for-mgt.name]
-	policy_arn = aws_iam_policy.ec2_securityhub_policy.arn
 }
 resource "aws_iam_policy_attachment" "lambda_ssm_policy_attach" {
 	name = "${var.unique_id}_ssm-policy-attachment"
