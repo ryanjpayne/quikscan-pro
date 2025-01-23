@@ -31,6 +31,7 @@ Created: 2025-01-16
 import json
 import logging
 import os
+import time
 import sys
 import base64
 import subprocess
@@ -205,11 +206,7 @@ def lambda_handler(event, _):
 
                 return scan_msg
             except Exception as err:
-                print(err)
-                print(
-                    f"Error getting object {key} from bucket {bucket_name}. "
-                    "Make sure they exist and your bucket is in the same region as this function."
-                )
+                print(f'Error: {err}')
                 raise err
 
         else:
