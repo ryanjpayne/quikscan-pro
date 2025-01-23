@@ -9,6 +9,10 @@ variable "falcon_client_secret" {
     type = string
     sensitive = true
 }
+variable "base_url" {
+    description = "The Base URL for the CrowdStrike Cloud API: https://api.crowdstrike.com, https://api.us-2.crowdstrike.com, https://api.eu-1.crowdstrike.com"
+    type = string
+}
 #
 
 variable "region" {
@@ -40,9 +44,4 @@ variable "lambda_description" {
     description = "The description used for the lambda function"
     type = string
     default = "QuikScan Pro Demo Function"
-}
-variable "base_url" {
-    description = "The Base URL for the CrowdStrike Cloud API"
-    type = string
-    default = "https://api.crowdstrike.com"
 }
