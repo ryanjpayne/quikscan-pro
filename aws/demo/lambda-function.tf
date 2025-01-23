@@ -1,6 +1,6 @@
 
 locals {
-    source_dir = "${path.cwd}/lambda"
+    source_dir = "../lambda"
 }
 
 # Package archive
