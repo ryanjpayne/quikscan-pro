@@ -21,7 +21,7 @@ data "aws_iam_policy_document" "lambda_secret_policy_document" {
         ]
         effect = "Allow"
         resources = [
-            "arn:aws:secretsmanager:*:*:secret:${var.unique_id}-secret"
+            "arn:aws:secretsmanager:*:*:secret:${var.unique_id}-secret-*"
         ]
     }
 }
