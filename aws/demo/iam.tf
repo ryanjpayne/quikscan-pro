@@ -82,7 +82,7 @@ resource "aws_iam_policy" "lambda_securityhub_policy" {
   policy      = data.aws_iam_policy_document.lambda_securityhub_policy_document.json
 }
 resource "aws_iam_role" "iam_for_lambda" {
-  name = "${var.unique_id}_${var.lambda_execution_role_name}" 
+  name = "${var.unique_id}-execution-role" 
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",

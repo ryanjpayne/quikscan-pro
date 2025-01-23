@@ -42,8 +42,8 @@ resource "aws_lambda_function" "func" {
   depends_on = [data.archive_file.lambda_archive]
   environment {
     variables = {
-        "CLIENT_ID_PARAM" = "${var.unique_id}_${var.ssm_param_client_id}"
-        "CLIENT_SECRET_PARAM" = "${var.unique_id}_${var.ssm_param_client_secret}"
+        "SECRET_NAME" = "${var.unique_id}-secret"
+        "SECRET_REGION" = "${var.region}"
         "BASE_URL" = "${var.base_url}"
         "MITIGATE_THREATS" = "${var.lambda_mitigate_threats}"
     }

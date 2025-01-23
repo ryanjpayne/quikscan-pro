@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket" {
-  bucket = "${var.unique_id}-${var.bucket_name}" 
+  bucket = "${var.unique_id}-bucket" 
   force_destroy = true
 }
 
