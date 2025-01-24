@@ -1,8 +1,7 @@
 #!/bin/bash
 echo "Uploading test files, please wait..."
-for i in TESTS_DIR/*
+for i in $(ls /home/ec2-user/testfiles)
 do
-    echo "Uploading ${i##*/} to BUCKET..."
-    aws s3 cp --quiet "TESTS_DIR/${i##*/}" BUCKET
+    aws s3 cp /home/ec2-user/testfiles/$i $BUCKET/$i
 done
-echo "Upload complete. Check Cloud Functions logs or use the get-findings command for scan results."
+echo "Upload complete. Check CloudWatch logs or use the get-findings command for scan results."

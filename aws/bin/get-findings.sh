@@ -1,7 +1,13 @@
 #!/bin/sh
-printf "Output from Cloud Functions logs:\n"
-# LOG_STREAM=$(aws logs describe-log-streams --log-group-name '/aws/lambda/MyFunction' --query logStreams[*].logStreamName)
-# aws logs get-log-events --log-group-name '/aws/lambda/MyFunction' --log-stream-name $LOG_STREAM | grep -E 'Threat|Verdict'
-LOG_GROUP=/aws/lambda/[YOUR-LAMBDA-NAME]
-LOG_STREAM=`aws logs describe-log-streams --log-group-name $LOG_GROUP --max-items 1 --order-by LastEventTime --descending --query logStreams[].logStreamName --output text | head -n 1`
-aws logs get-log-events --log-group-name $LOG_GROUP --log-stream-name $LOG_STREAM --query events[].message --output text
+figlet -w 220 -f cricket Findings
+echo -e "Findings in $(echo ${BUCKET/s3:\/\//}) for the past hour:\n"
+st=$(date -d '1 hour ago' '+%Y-%m-%dT%H:%M:%SZ')
+en=$(date -d 'now' '+%Y-%m-%dT%H:%M:%SZ')
+FILTER='{"ResourceId":[{"Value":"'$(echo ${BUCKET/s3:\/\//})'","Comparison":"PREFIX"}]'
+FILTER="$FILTER,\"CreatedAt\":[{\"Start\":\"$st\",\"End\":\"$en\"}]}"
+REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region -r)
+aws securityhub get-findings --region=$REGION \
+    --filters $FILTER \
+    --sort-criteria '{"Field": "LastObservedAt","SortOrder": "desc"}' \
+    --page-size 5 --max-items 100 --output json \
+    | jq --raw-output '.Findings[] | "\(.Title)\n\(.Description)"'
