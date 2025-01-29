@@ -9,6 +9,10 @@ variable "falcon_client_secret" {
     type = string
     sensitive = true
 }
+variable "unique_id" {
+    description = "A unique identifier appended to S3 Bucket"
+    type = string
+}
 #
 
 variable "region" {
@@ -16,10 +20,10 @@ variable "region" {
     type = string
     default = "us-east-1"
 }
-variable "unique_id" {
-    description = "A unique identifier that is prepended to all created resource names"
+variable "env_alias" {
+    description = "Demo alias is prepended to all created resource names"
     type = string
-    default = "quikscan-pro-demo"
+    default = "quickscan-pro-demo"
 }
 variable "lambda_function_filename" {
     description = "The name of the archive to use for the lambda function"

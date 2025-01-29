@@ -2,15 +2,15 @@
 
 # READ FALCON API CREDENTIALS
 echo "Enter your Falcon Client ID:"
-read CLIENT_ID
+read -s CLIENT_ID
 echo "Enter your Falcon Secret:"
-read SECRET
+read -s SECRET
 
 # SETUP ENVIRONMENT
 echo "Setting up..."
 TESTS="/home/cloudshell-user/cloud-storage-protection/AWS/demo/testfiles"
 mkdir $TESTS
-echo "export BUCKET=s3://quikscan-pro-demo-bucket" >> /etc/profile
+echo "export BUCKET=s3://quickscan-pro-demo-bucket" >> /etc/profile
 source /etc/profile
 cp /home/cloudshell-user/cloud-storage-protection/AWS/demo/bin/get-findings.sh /usr/local/bin/get-findings
 cp /home/cloudshell-user/cloud-storage-protection/AWS/demo/bin/upload.sh /usr/local/bin/upload
@@ -18,7 +18,7 @@ chmod +x /usr/local/bin/*
 
 # GET SAFE EXAMPLES
 echo "Getting safe example files..."
-wget -O $TESTS/unscannable.png https://www.crowdstrike.com/wp-content/uploads/2023/02/COSMIC-WOLF_AU_500px-300x300.png
+wget -O $TESTS/safe.png https://www.crowdstrike.com/wp-content/uploads/2023/02/COSMIC-WOLF_AU_500px-300x300.png
 wget -O $TESTS/safe.jpg https://www.crowdstrike.com/blog/wp-content/uploads/2018/04/April-Adversary-Stardust.jpg
 
 # GET MALICIOUS EXAMPLES
